@@ -58,7 +58,7 @@ class Login extends Component {
     const { disabled, loadingOn, redirect } = this.state;
 
     return (
-      <div>
+      <div data-testid="page-login">
         <form>
           <input
             type="input"
