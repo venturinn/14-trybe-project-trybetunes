@@ -4,13 +4,14 @@ import Header from '../Components/Header';
 import getMusics from '../services/musicsAPI';
 import MusicCard from '../Components/MusicCard';
 import Loading from '../Components/Loading';
-import { addSong } from '../services/favoriteSongsAPI';
+import { addSong, getFavoriteSongs, removeSong } from '../services/favoriteSongsAPI';
 
 class Album extends Component {
   constructor() {
     super();
 
     this.setFavorite = this.setFavorite.bind(this);
+    this.getFavorite = this.getFavorite.bind(this);
 
     this.state = {
       artistName: '',
@@ -18,23 +19,18 @@ class Album extends Component {
       artworkUrl100: '',
       musics: [],
       loading: true,
-      favoriteValues: [],
+      favoriteSongs: [],
     };
   }
 
   componentDidMount() {
     this.getMusicsAPI();
+    this.getFavorite();
   }
 
   getMusicsAPI = async () => {
     const { match: { params: { id } } } = this.props;
     const musicsAPI = await getMusics(id);
-
-    // Monta um array de booleanos com tamanho igual à quantidade de faixa de músicas. Array controlará as faixas favoritadas.
-    const mountFavoriteValues = [];
-    for (let index = 0; index < musicsAPI.length - 1; index += 1) {
-      mountFavoriteValues.push(false);
-    }
 
     this.setState({
       artistName: musicsAPI[0].artistName,
@@ -42,31 +38,38 @@ class Album extends Component {
       artworkUrl100: musicsAPI[0].artworkUrl100,
       musics: musicsAPI.slice(1),
       loading: false,
-      favoriteValues: mountFavoriteValues,
     });
+  }
+
+  getFavorite = async () => {
+    this.setState({ loading: true });
+    const favoriteSongsAPI = await getFavoriteSongs();
+    this.setState({ loading: false, favoriteSongs: favoriteSongsAPI });
   }
 
   async setFavorite({ target }) {
     const { name } = target;
     const value = target.checked;
-    const { musics, favoriteValues } = this.state;
-    const trackIndex = target.id;
+    const { musics } = this.state;
+    let favoriteSongsAPI = [];
 
     const trackId = parseInt(name, 10);
     const trackFavorite = musics.find((music) => music.trackId === trackId);
 
-    const favoriteValuesArray = favoriteValues;
-    favoriteValuesArray.splice(trackIndex, 1, value);
-
     this.setState({
       loading: true,
-      favoriteValues: favoriteValuesArray,
     });
 
-    await addSong(trackFavorite);
-
+    if (value === true) {
+      await addSong(trackFavorite);
+      favoriteSongsAPI = await getFavoriteSongs();
+    } else {
+      await removeSong(trackFavorite);
+      favoriteSongsAPI = await getFavoriteSongs();
+    }
     this.setState({
       loading: false,
+      favoriteSongs: favoriteSongsAPI,
     });
   }
 
@@ -76,7 +79,7 @@ class Album extends Component {
       artworkUrl100,
       musics,
       loading,
-      favoriteValues } = this.state;
+      favoriteSongs } = this.state;
 
     return (
       <div data-testid="page-album">
@@ -89,15 +92,14 @@ class Album extends Component {
                 <p data-testid="album-name">{collectionName}</p>
                 <img src={ artworkUrl100 } alt={ collectionName } />
               </section>
-              {musics.map((music, index) => (
+              {musics.map((music) => (
                 <div key={ music.trackId }>
                   <MusicCard
                     trackName={ music.trackName }
                     previewUrl={ music.previewUrl }
                     trackId={ music.trackId }
                     setFavorite={ this.setFavorite }
-                    value={ favoriteValues[index] }
-                    index={ index }
+                    value={ favoriteSongs.some((song) => song.trackId === music.trackId) }
                   />
                 </div>
               ))}
