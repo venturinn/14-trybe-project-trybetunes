@@ -18,6 +18,7 @@ class Album extends Component {
       artworkUrl100: '',
       musics: [],
       loading: true,
+      favoriteValues: [],
     };
   }
 
@@ -29,9 +30,11 @@ class Album extends Component {
     const { match: { params: { id } } } = this.props;
     const musicsAPI = await getMusics(id);
 
-    console.log(musicsAPI);
-
-    // const collectionInfo = musicsAPI.shift();
+    // Monta um array de booleanos com tamanho igual à quantidade de faixa de músicas. Array controlará as faixas favoritadas.
+    const mountFavoriteValues = [];
+    for (let index = 0; index < musicsAPI.length - 1; index += 1) {
+      mountFavoriteValues.push(false);
+    }
 
     this.setState({
       artistName: musicsAPI[0].artistName,
@@ -39,18 +42,28 @@ class Album extends Component {
       artworkUrl100: musicsAPI[0].artworkUrl100,
       musics: musicsAPI.slice(1),
       loading: false,
+      favoriteValues: mountFavoriteValues,
     });
   }
 
-  async setFavorite(target) {
+  async setFavorite({ target }) {
     const { name } = target;
-    const value = target.checkek;
+    const value = target.checked;
+    const { musics, favoriteValues } = this.state;
+    const trackIndex = target.id;
+
+    const trackId = parseInt(name, 10);
+    const trackFavorite = musics.find((music) => music.trackId === trackId);
+
+    const favoriteValuesArray = favoriteValues;
+    favoriteValuesArray.splice(trackIndex, 1, value);
 
     this.setState({
       loading: true,
+      favoriteValues: favoriteValuesArray,
     });
 
-    await addSong();
+    await addSong(trackFavorite);
 
     this.setState({
       loading: false,
@@ -58,7 +71,12 @@ class Album extends Component {
   }
 
   render() {
-    const { artistName, collectionName, artworkUrl100, musics, loading } = this.state;
+    const { artistName,
+      collectionName,
+      artworkUrl100,
+      musics,
+      loading,
+      favoriteValues } = this.state;
 
     return (
       <div data-testid="page-album">
@@ -71,13 +89,15 @@ class Album extends Component {
                 <p data-testid="album-name">{collectionName}</p>
                 <img src={ artworkUrl100 } alt={ collectionName } />
               </section>
-              {musics.map((music) => (
+              {musics.map((music, index) => (
                 <div key={ music.trackId }>
                   <MusicCard
                     trackName={ music.trackName }
                     previewUrl={ music.previewUrl }
                     trackId={ music.trackId }
                     setFavorite={ this.setFavorite }
+                    value={ favoriteValues[index] }
+                    index={ index }
                   />
                 </div>
               ))}
