@@ -10,6 +10,7 @@ class ProfileEdit extends Component {
     this.getUser = this.searchUser.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+    this.enabledDisabledSaveButton = this.enabledDisabledSaveButton.bind(this);
 
     this.state = {
       loading: true,
@@ -26,20 +27,16 @@ class ProfileEdit extends Component {
     this.searchUser();
   }
 
+  // ref.: https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
+  componentWillUnmount() {
+    this.setState = () => {};
+  }
+
   handleChange({ target }) {
-    const { userName, email, description, image } = this.state;
     const { name, value } = target;
 
     // Resolver problema assíncrono
-    this.setState(() => ({
-      [name]: value,
-    }));
-
-    if (userName !== '' && email !== '' && description !== '' && image !== '') {
-      this.setState({ isSaveButtonDisabled: false });
-    } else {
-      this.setState({ isSaveButtonDisabled: true });
-    }
+    this.setState({ [name]: value }, this.enabledDisabledSaveButton);
   }
 
   async onSaveButtonClick() {
@@ -61,9 +58,16 @@ class ProfileEdit extends Component {
     this.setState({ loading: true });
     await updateUser(userData);
 
-    window.location.href = '/profile';
-
     this.setState({ redirect: true });
+  }
+
+  enabledDisabledSaveButton() {
+    const { userName, email, description, image } = this.state;
+    if (userName !== '' && email !== '' && description !== '' && image !== '') {
+      this.setState({ isSaveButtonDisabled: false });
+    } else {
+      this.setState({ isSaveButtonDisabled: true });
+    }
   }
 
   async searchUser() {
@@ -74,7 +78,7 @@ class ProfileEdit extends Component {
       email: userAPI.email,
       description: userAPI.description,
       image: userAPI.image,
-    });
+    }, this.enabledDisabledSaveButton);
   }
 
   render() {
@@ -87,7 +91,7 @@ class ProfileEdit extends Component {
       redirect } = this.state;
 
     return (
-      <div data-testid="page-profile">
+      <div data-testid="page-profile-edit">
         <Header />
         { redirect && <Redirect to="/profile" />}
         { loading ? (<Loading />) : (
@@ -114,22 +118,28 @@ class ProfileEdit extends Component {
                 onChange={ this.handleChange }
               />
             </label>
-            <input
-              name="description"
-              data-testid="edit-input-description"
-              type="textarea"
-              placeholder="Descrição"
-              value={ description }
-              onChange={ this.handleChange }
-            />
-            <input
-              name="image"
-              data-testid="edit-input-image"
-              type="text"
-              placeholder="URL da imagem"
-              value={ image }
-              onChange={ this.handleChange }
-            />
+            <label htmlFor="description">
+              <input
+                id="description"
+                name="description"
+                data-testid="edit-input-description"
+                type="textarea"
+                placeholder="Descrição"
+                value={ description }
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="image">
+              <input
+                id="image"
+                name="image"
+                data-testid="edit-input-image"
+                type="text"
+                placeholder="URL da imagem"
+                value={ image }
+                onChange={ this.handleChange }
+              />
+            </label>
             <button
               data-testid="edit-button-save"
               type="button"
