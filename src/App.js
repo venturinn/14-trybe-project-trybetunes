@@ -9,6 +9,7 @@ import './pages/Album.css';
 import './pages/Favorite.css';
 import './pages/Profile.css';
 import './pages/ProfileEdit.css';
+import './pages/NotFound.css';
 import Search from './pages/Search';
 import Album from './pages/Album';
 import Favorites from './pages/Favorites';

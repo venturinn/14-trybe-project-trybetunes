@@ -88,7 +88,7 @@ class Album extends Component {
           ? (<Loading />) : (
             <div>
               <section>
-                <img src={ artworkUrl100 } alt={ collectionName } />
+                <img className="img-album" src={ artworkUrl100 } alt={ collectionName } />
                 <p data-testid="artist-name">{artistName}</p>
                 <p data-testid="album-name">{collectionName}</p>
               </section>
