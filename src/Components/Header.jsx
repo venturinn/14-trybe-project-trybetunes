@@ -24,13 +24,40 @@ class Header extends Component {
       <header data-testid="header-component">
         {user === ''
           ? (<Loading />)
-          : (<span data-testid="header-user-name">{user.name}</span>)}
+          : (<p className="name" data-testid="header-user-name">{user.name}</p>)}
         <br />
-        <Link data-testid="link-to-search" to="/search"> Pesquisar </Link>
-        <br />
-        <Link data-testid="link-to-favorites" to="/favorites"> Favoritos </Link>
-        <br />
-        <Link data-testid="link-to-profile" to="/profile"> Perfil </Link>
+        <div className="links-container">
+          <Link
+            className="link"
+            data-testid="link-to-search"
+            to="/search"
+          >
+            {' '}
+            Pesquisar
+            {' '}
+
+          </Link>
+          <Link
+            className="link"
+            data-testid="link-to-favorites"
+            to="/favorites"
+          >
+            {' '}
+            Favoritos
+            {' '}
+
+          </Link>
+          <Link
+            className="link"
+            data-testid="link-to-profile"
+            to="/profile"
+          >
+            {' '}
+            Perfil
+            {' '}
+
+          </Link>
+        </div>
       </header>
     );
   }

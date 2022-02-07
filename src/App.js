@@ -2,7 +2,13 @@ import React from 'react';
 import { Route, BrowserRouter } from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import Login from './pages/Login';
-
+import './pages/Login.css';
+import './Components/Header.css';
+import './pages/Search.css';
+import './pages/Album.css';
+import './pages/Favorite.css';
+import './pages/Profile.css';
+import './pages/ProfileEdit.css';
 import Search from './pages/Search';
 import Album from './pages/Album';
 import Favorites from './pages/Favorites';

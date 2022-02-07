@@ -58,18 +58,24 @@ class Login extends Component {
     const { disabled, loadingOn, redirect } = this.state;
 
     return (
-      <div data-testid="page-login">
+      <div className="login-container" data-testid="page-login">
+        <p className="title-01">Venturin</p>
+        <p className="title-02">Tunes</p>
         <form>
           <input
             type="input"
             data-testid="login-name-input"
             onChange={ this.onInputChange }
+            className="login-input"
+            placeholder="Nome"
           />
+          <br />
           <button
             data-testid="login-submit-button"
             disabled={ disabled }
             onClick={ this.setUser }
             type="button"
+            className="login-button"
           >
             Entrar
           </button>

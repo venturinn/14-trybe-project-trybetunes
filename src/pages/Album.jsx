@@ -88,12 +88,12 @@ class Album extends Component {
           ? (<Loading />) : (
             <div>
               <section>
+                <img src={ artworkUrl100 } alt={ collectionName } />
                 <p data-testid="artist-name">{artistName}</p>
                 <p data-testid="album-name">{collectionName}</p>
-                <img src={ artworkUrl100 } alt={ collectionName } />
               </section>
               {musics.map((music) => (
-                <div key={ music.trackId }>
+                <div className="track" key={ music.trackId }>
                   <MusicCard
                     trackName={ music.trackName }
                     previewUrl={ music.previewUrl }

@@ -69,9 +69,9 @@ class Search extends Component {
             {' '}
             {artistSearch}
           </p>
-          <div>
+          <div className="albuns-container">
             {artistsResult.map((artistResult) => (
-              <div key={ artistResult.collectionId }>
+              <div className="album-container" key={ artistResult.collectionId }>
                 <Link
                   data-testid={ `link-to-album-${artistResult.collectionId}` }
                   to={ `/album/${artistResult.collectionId}` }
@@ -96,7 +96,6 @@ class Search extends Component {
     const { disabled, artist, loading, resultAPIReady } = this.state;
     return (
       <div data-testid="page-search">
-        Search
         <Header />
         {loading === true ? (<Loading />)
           : (
@@ -106,12 +105,14 @@ class Search extends Component {
                 type="text"
                 onChange={ this.onInputChange }
                 value={ artist }
+                className="search-input"
               />
               <button
                 disabled={ disabled }
                 type="button"
                 data-testid="search-artist-button"
                 onClick={ this.searchArtist }
+                className="search-button"
               >
                 Pesquisar
 

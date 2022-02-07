@@ -14,9 +14,8 @@ class MusicCard extends Component {
           <code>audio</code>
           .
         </audio>
-
-        <label htmlFor={ trackId }>
-          Favorita
+        <br />
+        <label className="favorite" htmlFor={ trackId }>
           <input
             id={ trackId }
             name={ trackId }
@@ -25,6 +24,7 @@ class MusicCard extends Component {
             onChange={ setFavorite }
             checked={ value }
           />
+          Favorita
         </label>
       </div>
     );

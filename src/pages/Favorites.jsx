@@ -53,7 +53,7 @@ class Favorites extends Component {
         <Header />
         <p>Músicas favoritas:</p>
         { loading ? (<Loading />) : (
-          <div>
+          <div className="favorite">
             { favoriteSongs.map((song) => (
               <div key={ song.trackId }>
                 <MusicCard

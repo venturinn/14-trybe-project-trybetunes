@@ -35,7 +35,6 @@ class ProfileEdit extends Component {
   handleChange({ target }) {
     const { name, value } = target;
 
-    // Resolver problema assíncrono
     this.setState({ [name]: value }, this.enabledDisabledSaveButton);
   }
 
@@ -95,9 +94,10 @@ class ProfileEdit extends Component {
         <Header />
         { redirect && <Redirect to="/profile" />}
         { loading ? (<Loading />) : (
-          <form>
+          <form className="edit-perfil-form">
             <label htmlFor="userName">
               <input
+                className="edit-perfil-input"
                 id="userName"
                 name="userName"
                 data-testid="edit-input-name"
@@ -109,6 +109,7 @@ class ProfileEdit extends Component {
             </label>
             <label htmlFor="email">
               <input
+                className="edit-perfil-input"
                 id="email"
                 name="email"
                 data-testid="edit-input-email"
@@ -120,6 +121,7 @@ class ProfileEdit extends Component {
             </label>
             <label htmlFor="description">
               <input
+                className="edit-perfil-input"
                 id="description"
                 name="description"
                 data-testid="edit-input-description"
@@ -131,6 +133,7 @@ class ProfileEdit extends Component {
             </label>
             <label htmlFor="image">
               <input
+                className="edit-perfil-input"
                 id="image"
                 name="image"
                 data-testid="edit-input-image"
@@ -141,6 +144,7 @@ class ProfileEdit extends Component {
               />
             </label>
             <button
+              className="edit-perfil-button"
               data-testid="edit-button-save"
               type="button"
               disabled={ isSaveButtonDisabled }

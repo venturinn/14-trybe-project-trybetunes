@@ -1,0 +1,27 @@
+.edit-perfil-form {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  justify-content: space-between;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.edit-perfil-button {
+  background-color: blue;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 6px 60px;
+  width: 400px;
+
+}
+
+.edit-perfil-input {
+  border: solid 2px black;
+  border-radius: 5px;
+  width: 400px;
+}
+
